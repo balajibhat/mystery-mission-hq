@@ -15,8 +15,8 @@ Made a mistake? Nothing is ever lost. Every change is saved in the **History**, 
 
 ## How to build with AI (the fun way)
 
-1. Open [claude.ai](https://claude.ai) (or whichever AI you use).
-2. Paste in the contents of [`CLAUDE.md`](CLAUDE.md) first — that file teaches the AI the rules of YOUR site so it helps properly instead of wrecking things.
+1. Open [claude.ai](https://claude.ai), ChatGPT, Gemini — whichever AI you like. They all work.
+2. Paste in the contents of [`CLAUDE.md`](CLAUDE.md) first — that file teaches the AI the rules of YOUR site so it helps properly instead of wrecking things. (Despite the name, it works with every AI, not just Claude.)
 3. Then paste in your current `index.html` and say what you want, like:
    - "Add a new mission about designing a video game level"
    - "Make the memory game harder with a 5x5 grid"
