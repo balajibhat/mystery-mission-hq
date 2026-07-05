@@ -35,7 +35,7 @@
   --r2:       24px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:82px}
 body{
   background:var(--black);
   color:var(--white);
@@ -120,6 +120,18 @@ nav{
   box-shadow:0 0 18px var(--blueglow);
 }
 .nav-btn:hover{background:var(--blue2);transform:scale(1.05);box-shadow:0 0 32px var(--blueglow);}
+.nav-burger{
+  display:none;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);
+  border-radius:6px;
+  color:var(--white);
+  font-size:1.2rem;line-height:1;
+  padding:8px 13px;
+  cursor:none;
+  transition:border-color .2s,background .2s;
+}
+.nav-burger:hover{border-color:var(--blue);background:rgba(0,102,255,0.1);}
 
 /* ============================================================
    TICKER
@@ -964,7 +976,20 @@ footer{
   .week-grid{grid-template-columns:repeat(4,1fr);}
   .footer-inner{grid-template-columns:1fr 1fr;}
   nav{padding:0 20px;}
-  .nav-links{display:none;}
+  .nav-burger{display:block;}
+  .nav-links{
+    display:none;
+    position:fixed;top:70px;left:0;right:0;
+    flex-direction:column;gap:0;
+    background:rgba(0,0,0,0.96);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    padding:8px 24px 16px;
+  }
+  .nav-links.open{display:flex;}
+  .nav-links li{border-bottom:1px solid rgba(0,102,255,0.08);}
+  .nav-links li:last-child{border-bottom:none;}
+  .nav-links a{display:block;padding:16px 0;font-size:0.85rem;}
   .wrap{padding:0 24px;}
   .sec{padding:72px 0;}
   .daily-body,.daily-top{padding-left:24px;padding-right:24px;}
@@ -976,6 +1001,14 @@ footer{
   .footer-inner{grid-template-columns:1fr;}
   .hero{padding:80px 24px 60px;}
   .hero-title{font-size:2.6rem;}
+}
+
+/* ============================================================
+   TOUCH DEVICES — real cursor, no custom dot
+============================================================ */
+@media(hover:none){
+  *{cursor:auto !important}
+  #cur{display:none}
 }
 </style>
 </head>
@@ -999,7 +1032,8 @@ footer{
       <span class="status-dot"></span>
       MISSION LIVE
     </div>
-    <button class="nav-btn">Join HQ</button>
+    <button class="nav-btn" onclick="scrollTo('join')">Join HQ</button>
+    <button class="nav-burger" id="navBurger" aria-label="Open menu">☰</button>
   </div>
 </nav>
 
@@ -1110,7 +1144,7 @@ footer{
 <!-- WEEK VIEW -->
 <div style="background:var(--black3)">
   <div class="wrap">
-    <section class="sec">
+    <section class="sec" id="week">
       <div class="reveal">
         <span class="sec-tag">// THIS WEEK</span>
         <h2 class="sec-title">7 Days. <em>7 Missions.</em></h2>
@@ -1404,7 +1438,7 @@ footer{
 
 <!-- BADGES -->
 <div class="wrap">
-  <section class="sec">
+  <section class="sec" id="badges">
     <div class="reveal">
       <span class="sec-tag">// ACHIEVEMENT BADGES</span>
       <h2 class="sec-title">Earn Your <em>Badges</em></h2>
@@ -1510,7 +1544,7 @@ footer{
 
 <!-- NEWSLETTER -->
 <div class="wrap">
-  <section class="sec">
+  <section class="sec" id="join">
     <div class="nl-wrap reveal">
       <div class="nl-badge">
         <span class="status-dot"></span>
@@ -1537,28 +1571,28 @@ footer{
     <div class="footer-col">
       <h4>Missions</h4>
       <ul>
-        <li><a href="#">Today's Mission</a></li>
-        <li><a href="#">Mission Archive</a></li>
-        <li><a href="#">Mission Calendar</a></li>
-        <li><a href="#">Coming Soon</a></li>
+        <li><a href="#today">Today's Mission</a></li>
+        <li><a href="#missions">Mission Archive</a></li>
+        <li><a href="#week">Mission Calendar</a></li>
+        <li><a href="#join">Coming Soon</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Agents</h4>
       <ul>
-        <li><a href="#">Leaderboard</a></li>
-        <li><a href="#">My Badges</a></li>
-        <li><a href="#">Submit Work</a></li>
-        <li><a href="#">Hall of Fame</a></li>
+        <li><a href="#board">Leaderboard</a></li>
+        <li><a href="#badges">My Badges</a></li>
+        <li><a href="#submit">Submit Work</a></li>
+        <li><a href="#board">Hall of Fame</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>HQ</h4>
       <ul>
-        <li><a href="#">About Shivaan</a></li>
-        <li><a href="#">How It Works</a></li>
-        <li><a href="#">Contact HQ</a></li>
-        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#top">About Shivaan</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#join">Contact HQ</a></li>
+        <li><a href="#join">Privacy Policy</a></li>
       </ul>
     </div>
   </div>
@@ -1591,6 +1625,18 @@ document.querySelectorAll('button,a,.m-card,.day-card,.g-card,.badge-card,.step,
 function scrollTo(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 }
+
+/* ── MOBILE MENU ── */
+const burger = document.getElementById('navBurger');
+const navLinks = document.querySelector('.nav-links');
+burger.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  burger.textContent = open ? '✕' : '☰';
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  burger.textContent = '☰';
+}));
 
 /* ── SCROLL REVEAL ── */
 const observer = new IntersectionObserver(entries => {
