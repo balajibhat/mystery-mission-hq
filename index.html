@@ -1035,7 +1035,7 @@ footer{
       <span class="status-dot"></span>
       MISSION LIVE
     </div>
-    <button class="nav-btn" onclick="scrollTo('join')">Join HQ</button>
+    <button class="nav-btn" onclick="goTo('join')">Join HQ</button>
     <button class="nav-burger" id="navBurger" aria-label="Open menu">☰</button>
   </div>
 </nav>
@@ -1088,8 +1088,8 @@ footer{
   <p class="hero-sub">A new secret mission drops <strong>every single day.</strong> Build it. Crack it. Submit it. Rise to the top. Are you good enough?</p>
 
   <div class="hero-actions">
-    <button class="btn-gold" onclick="scrollTo('today')">⚡ Today's Mission</button>
-    <button class="btn-outline" onclick="scrollTo('missions')">All Missions</button>
+    <button class="btn-gold" onclick="goTo('today')">⚡ Today's Mission</button>
+    <button class="btn-outline" onclick="goTo('missions')">All Missions</button>
   </div>
 
   <div class="hero-scroll">
@@ -1136,7 +1136,7 @@ footer{
           <span class="tag tgrey">Solo / Team</span>
           <span class="tag tblue">Ages 8–16</span>
         </div>
-        <button class="btn-blue" onclick="scrollTo('submit')">Accept Mission — Submit Here →</button>
+        <button class="btn-blue" onclick="goTo('submit')">Accept Mission — Submit Here →</button>
       </div>
     </div>
   </section>
@@ -1625,7 +1625,7 @@ document.querySelectorAll('button,a,.m-card,.day-card,.g-card,.badge-card,.step,
 });
 
 /* ── SCROLL HELPER ── */
-function scrollTo(id) {
+function goTo(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -1712,7 +1712,7 @@ missions.forEach((m, i) => {
     document.getElementById('mEmoji').textContent = m.emoji;
     document.getElementById('mTitle').textContent = m.title;
     document.getElementById('mDesc').textContent = m.desc;
-    scrollTo('today');
+    goTo('today');
   });
   weekGrid.appendChild(card);
 });
