@@ -1717,6 +1717,17 @@ missions.forEach((m, i) => {
   weekGrid.appendChild(card);
 });
 
+/* ── ALL-MISSIONS CARDS — load into today's briefing ── */
+document.querySelectorAll('.m-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.getElementById('mEmoji').textContent = card.querySelector('.m-emoji').textContent;
+    document.getElementById('mTitle').textContent = card.querySelector('.m-title').textContent;
+    document.getElementById('mDesc').textContent = card.querySelector('.m-desc').textContent;
+    document.getElementById('missionDay').textContent = card.querySelector('.m-num').textContent + ' — Selected';
+    goTo('today');
+  });
+});
+
 /* ── COUNTDOWN TO MIDNIGHT ── */
 function updateTimer() {
   const now = new Date();
